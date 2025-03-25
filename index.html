@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArmaTuJubilación - Planifica tu retiro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ArmaTuJubilación</h1>
+            <p>Planifica tu jubilación de forma personalizada y visualiza cómo crecerá tu capital</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tabs">
+            <button class="tab-button active" data-tab="retirement">Plan de Retiro</button>
+            <button class="tab-button" data-tab="savings">Ahorro Personal</button>
+        </div>
+
+        <div id="retirementTab" class="tab-content active">
+            <div class="app-container">
+                <section class="calculator-section">
+                    <h2>Configura tu Plan de Retiro</h2>
+                    <form id="retirement-form">
+                        <div class="form-group">
+                            <label for="retirementType">¿Qué deseas calcular?</label>
+                            <div class="input-tooltip-container">
+                                <select id="retirementType">
+                                    <option value="duration">Monto de retiro anual</option>
+                                    <option value="amount">Duración del retiro</option>
+                                    <option value="initialAmount">Monto inicial necesario</option>
+                                    <option value="monthlyContribution">Aporte mensual necesario</option>
+                                </select>
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Elige qué variable quieres calcular en base a los demás datos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="initialAmountGroup">
+                            <label for="initialAmount">Monto Inicial (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="initialAmount" min="0" step="1000" placeholder="Ej: 10000">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Capital inicial con el que cuentas para comenzar tu inversión
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="contributionYearsGroup">
+                            <label for="contributionYears">Años de Aporte</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="contributionYears" min="1" max="50" placeholder="Ej: 30">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Período durante el cual realizarás aportes a tu fondo de retiro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="monthlyContributionGroup">
+                            <label for="monthlyContribution">Aporte Mensual (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="monthlyContribution" min="0" step="100" placeholder="Ej: 500">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Cantidad que aportarás mensualmente a tu fondo de retiro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="annualRateGroup">
+                            <label for="annualRate">Tasa Real Anual (%)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="annualRate" min="0" max="15" step="0.1" placeholder="Ej: 5">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Tasa de rendimiento anual ajustada por inflación. 
+                                        <a href="#historical-info" class="more-info">Más información</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="retirementDurationGroup">
+                            <label for="retirementDuration">Duración del Retiro (años)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="retirementDuration" min="1" max="50" placeholder="Ej: 20">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Cuántos años deseas que te dure el capital durante tu retiro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="retirementAmountGroup">
+                            <label for="retirementAmount">Monto Anual de Retiro (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="retirementAmount" min="0" step="1000" placeholder="Ej: 30000">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Cantidad que deseas retirar anualmente durante tu jubilación
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="targetFinalAmountGroup">
+                            <label for="targetFinalAmount">Capital Objetivo (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="targetFinalAmount" min="0" step="10000" placeholder="Ej: 500000">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Capital final que deseas acumular al finalizar el período de aportes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" id="calculateButton">Calcular</button>
+                    </form>
+                </section>
+
+                <section class="results-section">
+                    <h2>Resultados</h2>
+                    <div class="results">
+                        <div class="result-card" id="finalAmountCard">
+                            <h3>Capital Final Acumulado</h3>
+                            <p id="finalAmount" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="initialAmountResultCard">
+                            <h3>Monto Inicial Necesario</h3>
+                            <p id="calculatedInitialAmount" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="monthlyContributionResultCard">
+                            <h3>Aporte Mensual Necesario</h3>
+                            <p id="calculatedMonthlyContribution" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="annualWithdrawalCard">
+                            <h3>Retiro Anual Posible</h3>
+                            <p id="annualWithdrawal" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="retirementYearsCard">
+                            <h3>Duración del Retiro</h3>
+                            <p id="retirementYears" class="result-value">0 años</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="retirementChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="savingsTab" class="tab-content">
+            <div class="app-container">
+                <section class="calculator-section">
+                    <h2>Calcula tu Ahorro Personal</h2>
+                    <form id="savings-form">
+                        <div class="form-group">
+                            <label for="savingsCalculationType">¿Qué deseas calcular?</label>
+                            <div class="input-tooltip-container">
+                                <select id="savingsCalculationType">
+                                    <option value="futureValue">Capital final acumulado</option>
+                                    <option value="initialAmount">Monto inicial necesario</option>
+                                    <option value="monthlyContribution">Aporte mensual necesario</option>
+                                    <option value="timeToGoal">Tiempo para alcanzar meta</option>
+                                </select>
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Selecciona qué variable deseas calcular en base a los demás datos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="savingsInitialAmountGroup">
+                            <label for="savingsInitialAmount">Monto Inicial (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="savingsInitialAmount" min="0" step="1000" placeholder="Ej: 5000">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Capital inicial con el que cuentas para comenzar tu ahorro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="savingsMonthlyContributionGroup">
+                            <label for="savingsMonthlyContribution">Aporte Mensual (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="savingsMonthlyContribution" min="0" step="100" placeholder="Ej: 300">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Cantidad que aportarás mensualmente a tu ahorro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="savingsYearsGroup">
+                            <label for="savingsYears">Período de Ahorro (años)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="savingsYears" min="1" max="50" placeholder="Ej: 5">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Período durante el cual realizarás aportes a tu ahorro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="savingsRateGroup">
+                            <label for="savingsRate">Tasa Anual (%)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="savingsRate" min="0" max="15" step="0.1" placeholder="Ej: 3">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Tasa de rendimiento anual de tus ahorros
+                                        <a href="#historical-info" class="more-info">Más información</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="savingsGoalGroup">
+                            <label for="savingsGoal">Meta de Ahorro (USD)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="savingsGoal" min="0" step="1000" placeholder="Ej: 25000">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Cantidad que deseas alcanzar con tu plan de ahorro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" id="calculateSavingsButton">Calcular</button>
+                    </form>
+                </section>
+
+                <section class="results-section">
+                    <h2>Resultados</h2>
+                    <div class="results">
+                        <div class="result-card" id="savingsFinalAmountCard">
+                            <h3>Capital Final Acumulado</h3>
+                            <p id="savingsFinalAmount" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="savingsRequiredInitialCard">
+                            <h3>Monto Inicial Necesario</h3>
+                            <p id="savingsRequiredInitial" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="savingsRequiredContributionCard">
+                            <h3>Aporte Mensual Necesario</h3>
+                            <p id="savingsRequiredContribution" class="result-value">$0</p>
+                        </div>
+                        <div class="result-card" id="timeToGoalCard">
+                            <h3>Tiempo para Alcanzar Meta</h3>
+                            <p id="timeToGoal" class="result-value">0 años</p>
+                        </div>
+                        <div class="result-card" id="interestEarnedCard">
+                            <h3>Intereses Ganados</h3>
+                            <p id="interestEarned" class="result-value">$0</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <section class="info-section" id="historical-info">
+            <h2>Información sobre Tasas e Inversiones</h2>
+
+            <div class="historical-info">
+                <h3>Tasa Real y Rendimientos Históricos</h3>
+                <p>La <strong>tasa real</strong> es el rendimiento ajustado por inflación que se obtiene de una inversión. Se calcula restando la tasa de inflación de la tasa nominal de rendimiento.</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>S&P 500</h4>
+                        <p>El índice S&P 500 agrupa a las 500 empresas más grandes que cotizan en bolsa en Estados Unidos. En los últimos 60 años, ha tenido un rendimiento nominal promedio anual del 10%.</p>
+                        <p class="highlight">Rendimiento histórico: ~10% nominal / ~7% real</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>US Treasury 10Y</h4>
+                        <p>Los bonos del Tesoro estadounidense a 10 años son títulos de deuda emitidos por el gobierno de EE.UU. Son considerados una de las inversiones más seguras del mundo.</p>
+                        <p class="highlight">Rendimiento histórico: ~4.5% nominal / ~1.5% real</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>Inflación Promedio</h4>
+                        <p>La inflación es el aumento generalizado y sostenido de los precios de bienes y servicios. Reduce el poder adquisitivo del dinero con el tiempo.</p>
+                        <p class="highlight">Promedio histórico: ~3% anual</p>
+                    </div>
+                </div>
+                
+                <p class="disclaimer">Estos datos son referenciales basados en promedios históricos y no garantizan rendimientos futuros. Las inversiones siempre conllevan riesgos.</p>
+            </div>
+        </section>
+
+        <div class="ad-container">
+            <!-- Espacio reservado para publicidad -->
+            <div class="ad-placeholder">Espacio reservado para publicidad</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 ArmaTuJubilación. Esta herramienta es únicamente para fines educativos e informativos.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
