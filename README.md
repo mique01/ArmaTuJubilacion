@@ -25,31 +25,6 @@ ArmaTuJubilación permite a los usuarios calcular y visualizar cómo crecerá su
 
 ## Fórmulas Utilizadas
 
-### Acumulación
-El monto final acumulado (FV) se calcula utilizando la fórmula de valor futuro para una inversión con aportes periódicos:
-
-```
-FV = PV × (1 + r)ⁿ + PMT × [(1 + r)ⁿ - 1] / r
-```
-
-Donde:
-- `PV` = monto inicial
-- `PMT` = aporte anual (aporte mensual × 12)
-- `r` = tasa real anual (como decimal)
-- `n` = años de aporte
-
-### Decumulación
-El retiro anual posible (W) se calcula con la fórmula de anualidad:
-
-```
-W = FV × [r(1 + r)ⁿ / ((1 + r)ⁿ - 1)]
-```
-
-Alternativamente, la duración del retiro (n) con un monto fijo (W) se calcula así:
-
-```
-n = -ln(1 - r×FV/W) / ln(1 + r)
-```
 
 ## Cómo Utilizar
 

@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const retirementDuration = document.getElementById('retirementDuration');
     const retirementAmount = document.getElementById('retirementAmount');
     const targetFinalAmount = document.getElementById('targetFinalAmount');
+    const decumulationRate = document.getElementById('decumulationRate');
     
     // Input groups
     const initialAmountGroup = document.getElementById('initialAmountGroup');
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const retirementDurationGroup = document.getElementById('retirementDurationGroup');
     const retirementAmountGroup = document.getElementById('retirementAmountGroup');
     const targetFinalAmountGroup = document.getElementById('targetFinalAmountGroup');
+    const decumulationRateGroup = document.getElementById('decumulationRateGroup');
     
     // Result elements
     const finalAmountElement = document.getElementById('finalAmount');
@@ -96,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 initialAmountGroup.classList.remove('hidden');
                 monthlyContributionGroup.classList.remove('hidden');
                 retirementDurationGroup.classList.remove('hidden');
+                decumulationRateGroup.classList.remove('hidden');
                 annualWithdrawalCard.classList.remove('hidden');
                 break;
                 
@@ -104,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 initialAmountGroup.classList.remove('hidden');
                 monthlyContributionGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
+                decumulationRateGroup.classList.remove('hidden');
                 retirementYearsCard.classList.remove('hidden');
                 break;
                 
@@ -112,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 monthlyContributionGroup.classList.remove('hidden');
                 retirementDurationGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
+                decumulationRateGroup.classList.remove('hidden');
                 initialAmountResultCard.classList.remove('hidden');
                 break;
                 
@@ -120,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 initialAmountGroup.classList.remove('hidden');
                 retirementDurationGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
+                decumulationRateGroup.classList.remove('hidden');
                 monthlyContributionResultCard.classList.remove('hidden');
                 break;
         }
@@ -134,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         retirementDurationGroup.classList.add('hidden');
         retirementAmountGroup.classList.add('hidden');
         targetFinalAmountGroup.classList.add('hidden');
+        decumulationRateGroup.classList.add('hidden');
     }
     
     function hideAllRetirementCards() {
@@ -163,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let withdrawalDuration = parseInt(retirementDuration.value) || 0;
         let withdrawalAmount = parseFloat(retirementAmount.value) || 0;
         let targetFV = parseFloat(targetFinalAmount.value) || 0;
+        let decumulationRateValue = (parseFloat(decumulationRate.value) || parseFloat(annualRate.value) || 0) / 100; // Si no se especifica, usar la misma que acumulación
         
         let FV = 0;
         let calculatedPV = 0;
@@ -173,24 +181,24 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'duration':
                 // Calculate future value and annual withdrawal
                 FV = calculateFutureValue(PV, PMT, r, n);
-                const annualWithdrawal = calculateAnnualWithdrawal(FV, r, withdrawalDuration);
+                const annualWithdrawal = calculateAnnualWithdrawal(FV, decumulationRateValue, withdrawalDuration);
                 
                 // Display results
                 finalAmountElement.textContent = formatCurrency(FV);
                 annualWithdrawalElement.textContent = formatCurrency(annualWithdrawal);
                 
                 // Create chart
-                createRetirementChart(PV, PMT, r, n, FV, annualWithdrawal, withdrawalDuration);
+                createRetirementChart(PV, PMT, r, n, FV, annualWithdrawal, withdrawalDuration, decumulationRateValue);
                 break;
                 
             case 'amount':
                 // Calculate future value and withdrawal years
                 FV = calculateFutureValue(PV, PMT, r, n);
-                let withdrawalYears = calculateWithdrawalYears(FV, r, withdrawalAmount);
+                let withdrawalYears = calculateWithdrawalYears(FV, decumulationRateValue, withdrawalAmount);
                 
                 // Si el resultado es infinito o muy grande, mostrar como "Indefinido"
                 if (!isFinite(withdrawalYears) || withdrawalYears > 150) {
-                    retirementYearsElement.textContent = "Indefinido";
+                    retirementYearsElement.textContent = "Perpetuo";
                     // Usar un valor razonable para el gráfico
                     withdrawalYears = 50;
                 } else {
@@ -201,20 +209,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 finalAmountElement.textContent = formatCurrency(FV);
                 
                 // Create chart
-                createRetirementChart(PV, PMT, r, n, FV, withdrawalAmount, withdrawalYears);
+                createRetirementChart(PV, PMT, r, n, FV, withdrawalAmount, withdrawalYears, decumulationRateValue);
                 break;
                 
             case 'initialAmount':
-                // Calculate initial amount needed
-                FV = calculateFutureValueForWithdrawal(withdrawalAmount, r, withdrawalDuration);
-                calculatedPV = calculateRequiredInitialAmount(FV, PMT, r, n);
+                // Calcular el capital futuro necesario para los retiros
+                FV = calculateFutureValueForWithdrawal(withdrawalAmount, decumulationRateValue, withdrawalDuration);
+                
+                // Calcular cuánto capital futuro podríamos alcanzar solo con aportes mensuales (sin capital inicial)
+                const futureValueWithoutInitial = calculateFutureValue(0, PMT, r, n);
+                
+                // Si ya podemos alcanzar el capital necesario solo con aportes mensuales
+                if (futureValueWithoutInitial >= FV) {
+                    calculatedPV = 0;
+                    calculatedInitialAmountElement.textContent = "No es necesario capital inicial";
+                } else {
+                    // Calcular el capital inicial necesario para llegar a FV considerando los aportes mensuales
+                    // FV = PV * (1+r)^n + PMT * [(1+r)^n - 1] / r
+                    // Por lo tanto: PV = [FV - PMT * ((1+r)^n - 1) / r] / (1+r)^n
+                    const compoundFactor = Math.pow(1 + r, n);
+                    const pmtContribution = PMT * (compoundFactor - 1) / r;
+                    calculatedPV = Math.max(1, (FV - pmtContribution) / compoundFactor);
+                    
+                    calculatedInitialAmountElement.textContent = formatCurrency(calculatedPV);
+                }
+                
+                // Calcular el capital final acumulado real
+                const realFV = calculateFutureValue(calculatedPV, PMT, r, n);
                 
                 // Display results
-                finalAmountElement.textContent = formatCurrency(FV);
-                calculatedInitialAmountElement.textContent = formatCurrency(calculatedPV);
+                finalAmountElement.textContent = formatCurrency(realFV);
                 
                 // Create chart with calculated initial amount
-                createRetirementChart(calculatedPV, PMT, r, n, FV, withdrawalAmount, withdrawalDuration);
+                createRetirementChart(calculatedPV, PMT, r, n, FV, withdrawalAmount, withdrawalDuration, decumulationRateValue);
                 break;
                 
             case 'monthlyContribution':
@@ -222,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (targetFV > 0) {
                     FV = targetFV;
                 } else {
-                    FV = calculateFutureValueForWithdrawal(withdrawalAmount, r, withdrawalDuration);
+                    FV = calculateFutureValueForWithdrawal(withdrawalAmount, decumulationRateValue, withdrawalDuration);
                 }
                 
                 calculatedPMT = calculateRequiredMonthlyContribution(FV, PV, r, n);
@@ -232,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 calculatedMonthlyContributionElement.textContent = formatCurrency(calculatedPMT / 12); // Convert annual to monthly
                 
                 // Create chart with calculated monthly contribution
-                createRetirementChart(PV, calculatedPMT, r, n, FV, withdrawalAmount, withdrawalDuration);
+                createRetirementChart(PV, calculatedPMT, r, n, FV, withdrawalAmount, withdrawalDuration, decumulationRateValue);
                 break;
         }
     }
@@ -250,15 +277,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate future value needed for a specific withdrawal
     function calculateFutureValueForWithdrawal(W, r, n) {
-        // FV = W × [(1 + r)ⁿ - 1] / [r × (1 + r)ⁿ]
-        if (n === 0) return 0;
+        // Verificar entradas válidas
+        if (n <= 0 || W <= 0) return 0;
         
-        if (r === 0 || r < 0.0001) {
+        // Si la tasa es cercana a cero, simplemente multiplicar
+        if (r === 0 || Math.abs(r) < 0.0001) {
             return W * n;
         }
         
-        const compoundFactor = Math.pow(1 + r, n);
-        return Math.max(1, W * (compoundFactor - 1) / (r * compoundFactor));
+        // La fórmula correcta para el capital necesario para sostener retiros anuales de W durante n años con tasa r
+        // Calcular el capital necesario al inicio del período de retiro para hacer retiradas de "W" durante "n" años
+        // Esta es la fórmula de anualidad con pago al inicio del período
+        return W * ((1 - Math.pow(1 + r, -n)) / r);
     }
     
     // Calculate initial amount needed
@@ -331,10 +361,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.max(0, -Math.log(term) / Math.log(1 + r));
     }
     
-    // Create retirement chart function - Versión corregida para evitar superposición
-    function createRetirementChart(PV, PMT, r, contributionYears, FV, annualWithdrawal, withdrawalYears) {
+    // Create retirement chart function - Versión corregida
+    function createRetirementChart(PV, PMT, r, contributionYears, FV, annualWithdrawal, withdrawalYears, decumulationR) {
+        // Asegurarse de que tenemos un valor para la tasa de decumulación
+        const decumulationRate = decumulationR !== undefined ? decumulationR : r;
+        
         // Prepare data for accumulation phase (contribution years)
         const accumulationData = [];
+        
+        // Calcular el último valor de acumulación que será el valor futuro real
+        const actualFV = calculateFutureValue(PV, PMT, r, contributionYears);
+        
         for (let year = 0; year <= contributionYears; year++) {
             const value = calculateFutureValue(PV, PMT, r, year);
             accumulationData.push({
@@ -345,40 +382,33 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Prepare data for decumulation phase (withdrawal years)
         const decumulationData = [];
+        
+        // Determinar duración máxima para la fase de decumulación
         let maxDecumulationYears = 30; // Valor por defecto
         
-        // Si withdrawalYears es finito y no es cero, usarlo como límite
+        // Si withdrawalYears es finito, usarlo como límite
         if (isFinite(withdrawalYears) && withdrawalYears > 0) {
-            maxDecumulationYears = Math.min(Math.ceil(withdrawalYears), 50);
+            maxDecumulationYears = Math.min(Math.ceil(withdrawalYears + 1), 100);
         }
         
-        // Punto inicial de la fase de decumulación es el capital acumulado
-        let remainingCapital = FV;
+        // El primer punto de la fase de decumulación es el valor final acumulado real
         decumulationData.push({
             x: contributionYears,
-            y: Math.round(remainingCapital)
+            y: Math.round(actualFV)
         });
         
-        // Calcular la decumulación año a año
+        // Simular la decumulación año a año con precisión
+        let remainingCapital = actualFV;
+        
         for (let year = 1; year <= maxDecumulationYears; year++) {
-            // Si el capital ya se agotó, no continuar
-            if (remainingCapital <= 0) {
-                break;
-            }
+            // Si se está calculando el retiro anual fijo (caso duration), usar el valor calculado
+            // Si se está calculando otra cosa, usar el valor del parámetro directamente
+            const withdrawalForYear = annualWithdrawal;
             
             // Restar el retiro anual
-            remainingCapital -= annualWithdrawal;
+            remainingCapital = remainingCapital - withdrawalForYear;
             
-            // Aplicar interés al capital restante
-            remainingCapital = Math.max(0, remainingCapital * (1 + r));
-            
-            // Agregar punto al gráfico
-            decumulationData.push({
-                x: contributionYears + year,
-                y: Math.round(remainingCapital)
-            });
-            
-            // Si el capital se agotó después de aplicar interés, agregar punto final
+            // Si el capital se agotó, mostrar como cero y terminar
             if (remainingCapital <= 0) {
                 decumulationData.push({
                     x: contributionYears + year,
@@ -386,6 +416,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 break;
             }
+            
+            // Aplicar interés usando la tasa de decumulación
+            remainingCapital = remainingCapital * (1 + decumulationRate);
+            
+            // Agregar punto al gráfico
+            decumulationData.push({
+                x: contributionYears + year,
+                y: Math.round(remainingCapital)
+            });
         }
         
         // Destroy previous chart if it exists
@@ -491,6 +530,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 if (datasetIndex === 0 && year <= contributionYears) {
                                     // Información adicional para fase de acumulación
                                     const yearsLeft = contributionYears - year;
+                                    if (year === contributionYears) {
+                                        return 'Fase de Acumulación: ' + formatCurrency(value) + '\nÚltimo año de aporte';
+                                    }
                                     return yearsLeft > 0 ? 
                                           'Te faltan ' + yearsLeft + (yearsLeft === 1 ? ' año' : ' años') + ' de aporte' 
                                         : 'Último año de aporte';
@@ -956,7 +998,8 @@ document.addEventListener('DOMContentLoaded', function() {
         annualRate, 
         retirementDuration, 
         retirementAmount, 
-        targetFinalAmount
+        targetFinalAmount,
+        decumulationRate
     ];
     
     retirementInputs.forEach(element => {
@@ -1022,12 +1065,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatYears(years) {
         // Verificar si el valor es válido
         if (!isFinite(years) || isNaN(years) || years === null) {
-            return "Indefinido";
+            return "Perpetuo";
         }
         
-        // Si el valor es muy grande, mostrar como indefinido
+        // Si el valor es muy grande, mostrar como perpetuo
         if (years > 150) {
-            return "Indefinido";
+            return "Perpetuo";
         }
         
         if (years < 1) {
@@ -1035,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return months + (months === 1 ? ' mes' : ' meses');
         }
         
+        // Redondear a 1 decimal para mejor visualización
         return years.toFixed(1) + ' años';
     }
 }); 

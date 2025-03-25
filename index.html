@@ -11,7 +11,9 @@
 <body>
     <header>
         <div class="container">
-            <h1>ArmaTuJubilación</h1>
+            <h1 class="title-with-icon">
+                Arma Tu Jubilación
+            </h1>
             <p>Planifica tu jubilación de forma personalizada y visualiza cómo crecerá tu capital</p>
         </div>
     </header>
@@ -106,6 +108,19 @@
                                     <i class="fas fa-info-circle"></i>
                                     <div class="tooltip-content">
                                         Cuántos años deseas que te dure el capital durante tu retiro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="decumulationRateGroup">
+                            <label for="decumulationRate">Tasa en Retiro (%)</label>
+                            <div class="input-tooltip-container">
+                                <input type="number" id="decumulationRate" min="0" max="15" step="0.1" placeholder="Ej: 3">
+                                <div class="tooltip-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content">
+                                        Tasa de rendimiento anual durante la fase de retiro (si es diferente de la fase de ahorro)
                                     </div>
                                 </div>
                             </div>
@@ -307,19 +322,19 @@
                 
                 <div class="info-grid">
                     <div class="info-card">
-                        <h4>S&P 500</h4>
+                        <h4>S&P 500 <a href="https://www.investing.com/indices/us-spx-500?utm_source=google&utm_medium=cpc&utm_campaign=16816825575&utm_content=725858862462&utm_term=dsa-1518303930164_&GL_Ad_ID=725858862462&GL_Campaign_ID=16816825575&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmuQkreexMkJjLFhzuJ6oB9-moWyZ0pM76SZ7bEBznlOnFl0SchpKksaAoTlEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
                         <p>El índice S&P 500 agrupa a las 500 empresas más grandes que cotizan en bolsa en Estados Unidos. En los últimos 60 años, ha tenido un rendimiento nominal promedio anual del 10%.</p>
                         <p class="highlight">Rendimiento histórico: ~10% nominal / ~7% real</p>
                     </div>
                     
                     <div class="info-card">
-                        <h4>US Treasury 10Y</h4>
+                        <h4>US Treasury 10Y <a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield?utm_source=google&utm_medium=cpc&utm_campaign=16816825584&utm_content=591978799350&utm_term=dsa-1546555491574_&GL_Ad_ID=591978799350&GL_Campaign_ID=16816825584&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmt0vNqMIbt0RTWTuggGTltUwwMQexukfxa47ags546tANpkr3o9il4aAn4cEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
                         <p>Los bonos del Tesoro estadounidense a 10 años son títulos de deuda emitidos por el gobierno de EE.UU. Son considerados una de las inversiones más seguras del mundo.</p>
                         <p class="highlight">Rendimiento histórico: ~4.5% nominal / ~1.5% real</p>
                     </div>
                     
                     <div class="info-card">
-                        <h4>Inflación Promedio</h4>
+                        <h4>Inflación Promedio (USA) <a href="https://datos.bancomundial.org/indicador/FP.CPI.TOTL.ZG?end=2023&locations=US&start=1960&view=chart" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
                         <p>La inflación es el aumento generalizado y sostenido de los precios de bienes y servicios. Reduce el poder adquisitivo del dinero con el tiempo.</p>
                         <p class="highlight">Promedio histórico: ~3% anual</p>
                     </div>

@@ -309,10 +309,23 @@ button:hover {
     color: var(--secondary-color);
     margin-bottom: 0.8rem;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
 }
 
 .info-card p {
     margin-bottom: 0.8rem;
+}
+
+.info-link {
+    margin-left: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.info-link:hover {
+    color: var(--accent-color);
 }
 
 .highlight {
@@ -414,10 +427,31 @@ footer {
     .tooltip-content::after {
         right: 60px;
     }
+    
+    .header-icon {
+        height: 1.2em;
+    }
 }
 
 /* Ensure graphs are visible */
 canvas {
     background-color: rgba(30, 30, 30, 0.4);
     border-radius: 8px;
+}
+
+/* Estilos para el título con icono */
+.title-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.header-icon {
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+    stroke: white;
+    stroke-width: 1.2;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
 } 
