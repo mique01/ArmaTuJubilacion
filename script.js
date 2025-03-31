@@ -2,16 +2,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tab functionality
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
+    const glossaryLinks = document.querySelectorAll('.glossary-link'); // Get all glossary links
     
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all tabs
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
+            activateTab(this.dataset.tab);
+        });
+    });
+    
+    // Function to activate a specific tab
+    function activateTab(tabId) {
+        // Remove active class from all tabs
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Add active class to the target tab
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        document.getElementById(tabId + 'Tab').classList.add('active');
+    }
+    
+    // Handle clicks on glossary links
+    glossaryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default anchor behavior
+            const targetId = this.getAttribute('href').substring(1); // Get target element ID (remove #)
             
-            // Add active class to current tab
-            this.classList.add('active');
-            document.getElementById(this.dataset.tab + 'Tab').classList.add('active');
+            // Switch to the glossary tab
+            activateTab('glossary');
+
+            // Scroll to the term in the glossary
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Optional: Highlight the term briefly
+                targetElement.classList.add('highlight-glossary');
+                setTimeout(() => {
+                    targetElement.classList.remove('highlight-glossary');
+                }, 1500); // Remove highlight after 1.5 seconds
+            }
         });
     });
     
@@ -79,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle retirement type change
     retirementType.addEventListener('change', function() {
         setupRetirementForCalculationType(this.value);
+        // Trigger calculation when changing type
+        calculateRetirement();
     });
     
     function setupRetirementForCalculationType(type) {
@@ -89,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Always show these fields
         contributionYearsGroup.classList.remove('hidden');
         annualRateGroup.classList.remove('hidden');
-        finalAmountCard.classList.remove('hidden');
         
         // Show appropriate fields based on calculation type
         switch(type) {
@@ -99,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 monthlyContributionGroup.classList.remove('hidden');
                 retirementDurationGroup.classList.remove('hidden');
                 decumulationRateGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
+                finalAmountCard.classList.remove('hidden');
                 annualWithdrawalCard.classList.remove('hidden');
                 break;
                 
@@ -108,6 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 monthlyContributionGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
                 decumulationRateGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
+                finalAmountCard.classList.remove('hidden');
                 retirementYearsCard.classList.remove('hidden');
                 break;
                 
@@ -117,6 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 retirementDurationGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
                 decumulationRateGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
+                finalAmountCard.classList.remove('hidden');
                 initialAmountResultCard.classList.remove('hidden');
                 break;
                 
@@ -126,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 retirementDurationGroup.classList.remove('hidden');
                 retirementAmountGroup.classList.remove('hidden');
                 decumulationRateGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
+                finalAmountCard.classList.remove('hidden');
                 monthlyContributionResultCard.classList.remove('hidden');
                 break;
         }
@@ -170,7 +211,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let withdrawalDuration = parseInt(retirementDuration.value) || 0;
         let withdrawalAmount = parseFloat(retirementAmount.value) || 0;
         let targetFV = parseFloat(targetFinalAmount.value) || 0;
-        let decumulationRateValue = (parseFloat(decumulationRate.value) || parseFloat(annualRate.value) || 0) / 100; // Si no se especifica, usar la misma que acumulación
+        
+        // Nueva lógica para la tasa de decumulación:
+        // Si hay un valor específico en el campo, usarlo, de lo contrario usar 0
+        let decumulationRateValue = 0;
+        if (decumulationRate.value.trim() !== "") {
+            decumulationRateValue = parseFloat(decumulationRate.value) / 100;
+        }
         
         let FV = 0;
         let calculatedPV = 0;
@@ -280,15 +327,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verificar entradas válidas
         if (n <= 0 || W <= 0) return 0;
         
-        // Si la tasa es cercana a cero, simplemente multiplicar
-        if (r === 0 || Math.abs(r) < 0.0001) {
-            return W * n;
+        // Si la tasa es cero, simplemente multiplicar el retiro anual por los años
+        // ya que no hay capitalización durante el retiro
+        if (r === 0) {
+            return W *n;
         }
         
-        // La fórmula correcta para el capital necesario para sostener retiros anuales de W durante n años con tasa r
-        // Calcular el capital necesario al inicio del período de retiro para hacer retiradas de "W" durante "n" años
-        // Esta es la fórmula de anualidad con pago al inicio del período
-        return W * ((1 - Math.pow(1 + r, -n)) / r);
+        // La fórmula para calcular el capital necesario para retiros anuales de W durante n años
+        // con una tasa de capitalización r es:
+        // FV = W * (1 - (1 + r)^(-n)) / r
+        return W * (1 - Math.pow(1 + r, -n)) / r;
     }
     
     // Calculate initial amount needed
@@ -324,13 +372,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate annual withdrawal (decumulation phase)
     function calculateAnnualWithdrawal(FV, r, n) {
-        // W = FV × [r(1 + r)ⁿ / ((1 + r)ⁿ - 1)]
-        if (r === 0 || n === 0) {
-            return n > 0 ? FV / n : 0;
+        // Si no hay años de retiro, retornar 0
+        if (n <= 0) return 0;
+        
+        // Si la tasa es cero, simplemente dividir el capital entre los años
+        // ya que no hay capitalización durante el retiro
+        if (r === 0) {
+            return FV / n;
         }
         
-        const compoundFactor = Math.pow(1 + r, n);
-        return FV * (r * compoundFactor) / (compoundFactor - 1);
+        // La fórmula para calcular el retiro anual posible dado un capital FV,
+        // una tasa de capitalización r y un período de n años es:
+        // W = FV * r / (1 - (1 + r)^(-n))
+        return FV * r / (1 - Math.pow(1 + r, -n));
     }
     
     // Calculate withdrawal years
@@ -364,7 +418,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create retirement chart function - Versión corregida
     function createRetirementChart(PV, PMT, r, contributionYears, FV, annualWithdrawal, withdrawalYears, decumulationR) {
         // Asegurarse de que tenemos un valor para la tasa de decumulación
-        const decumulationRate = decumulationR !== undefined ? decumulationR : r;
+        // Si se proporciona undefined o null, usar 0, no la tasa de acumulación
+        const decumulationRate = decumulationR !== undefined ? decumulationR : 0;
         
         // Prepare data for accumulation phase (contribution years)
         const accumulationData = [];
@@ -630,7 +685,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Always show interest rate
         savingsRateGroup.classList.remove('hidden');
-        interestEarnedCard.classList.remove('hidden');
         
         // Show appropriate fields and cards based on calculation type
         switch(type) {
@@ -639,7 +693,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 savingsInitialAmountGroup.classList.remove('hidden');
                 savingsMonthlyContributionGroup.classList.remove('hidden');
                 savingsYearsGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
                 savingsFinalAmountCard.classList.remove('hidden');
+                interestEarnedCard.classList.remove('hidden');
                 break;
                 
             case 'initialAmount':
@@ -647,7 +704,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 savingsMonthlyContributionGroup.classList.remove('hidden');
                 savingsYearsGroup.classList.remove('hidden');
                 savingsGoalGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
                 savingsRequiredInitialCard.classList.remove('hidden');
+                interestEarnedCard.classList.remove('hidden');
                 break;
                 
             case 'monthlyContribution':
@@ -655,7 +715,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 savingsInitialAmountGroup.classList.remove('hidden');
                 savingsYearsGroup.classList.remove('hidden');
                 savingsGoalGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
                 savingsRequiredContributionCard.classList.remove('hidden');
+                interestEarnedCard.classList.remove('hidden');
                 break;
                 
             case 'timeToGoal':
@@ -663,7 +726,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 savingsInitialAmountGroup.classList.remove('hidden');
                 savingsMonthlyContributionGroup.classList.remove('hidden');
                 savingsGoalGroup.classList.remove('hidden');
+                
+                // Solo mostrar estas tarjetas de resultados
                 timeToGoalCard.classList.remove('hidden');
+                interestEarnedCard.classList.remove('hidden');
                 break;
         }
     }
@@ -1008,8 +1074,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    retirementType.addEventListener('change', debounce(calculateRetirement, 100));
-    
     const savingsInputs = [
         savingsInitialAmount, 
         savingsMonthlyContribution, 
@@ -1040,19 +1104,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Trigger initial calculations
-    calculateRetirement();
-    calculateSavings();
+    setTimeout(() => {
+        // Setup the calculator based on the initial selection
+        setupRetirementForCalculationType(retirementType.value);
+        // Perform initial calculations
+        calculateRetirement();
+        calculateSavings();
+    }, 100);
     
     // Format functions with consistent styles
     function formatCurrency(value) {
         // Verificar si el valor es válido
-        if (!isFinite(value) || isNaN(value) || value === null) {
+        if (!isFinite(value) || isNaN(value) || value === null || value === 0) {
             return "$0";
         }
         
         // Si el valor es muy pequeño, mostrar un valor mínimo
         if (value < 1) {
-            return "$1";
+            return "$0";
         }
         
         return new Intl.NumberFormat('es-ES', {
@@ -1064,8 +1133,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function formatYears(years) {
         // Verificar si el valor es válido
-        if (!isFinite(years) || isNaN(years) || years === null) {
-            return "Perpetuo";
+        if (!isFinite(years) || isNaN(years) || years === null || years === 0) {
+            return "0 años";
         }
         
         // Si el valor es muy grande, mostrar como perpetuo

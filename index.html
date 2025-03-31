@@ -3,13 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArmaTuJubilación - Planifica tu retiro</title>
+    
+    <!-- SEO Optimizado -->
+    <title>Calculadora de Jubilación y Ahorro | Simula tu Retiro</title>
+    <meta name="description" content="Calcula tu jubilación mínima en Argentina. Herramienta gratuita de simulación para planificar tu retiro y ahorros con tasas actualizadas. ¡Planifica hoy tu futuro!">
+    <meta name="keywords" content="jubilación argentina, jubilación mínima, cálculo de jubilación, cálculo de ahorro, planificación retiro argentina, ANSES, simulador financiero">
+    
+    <!-- Meta tags para redes sociales -->
+    <meta property="og:title" content="Calculadora de Jubilación y Ahorro | Planifica tu Futuro Financiero">
+    <meta property="og:description" content="Herramienta gratuita para calcular tu retiro, simular tu plan de ahorro y visualizar cuánto necesitas para tu jubilación con gráficos interactivos.">
+    <meta property="og:url" content="https://armatujubilacion.com">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://armatujubilacion.com/images/calculadora-preview.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculadora de Jubilación | Planifica tu Retiro">
+    <meta name="twitter:description" content="Calcula cuánto dinero necesitas para tu jubilación con esta herramienta gratuita de simulación financiera.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://armatujubilacion.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<<<<<<< HEAD
     <meta name="google-site-verification" content="F7JFTBNYIiJRqk3aoLzjxKcr8jaDPhxuWp7Q6PqJM34" />
+=======
+    
+    <!-- Schema.org para calculadora financiera -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialProduct",
+      "name": "Calculadora de Jubilación Argentina",
+      "description": "Herramienta gratuita para calcular y planificar tu jubilación en Argentina. Simula escenarios de retiro y calcula la jubilación mínima.",
+      "category": ["Jubilación Argentina", "Planificación Financiera", "Calculadora de Retiro"],
+      "featureList": [
+        "Cálculo de jubilación mínima argentina",
+        "Simulación de ahorro para retiro",
+        "Cálculo de capital necesario para jubilación",
+        "Visualización gráfica de acumulación y desacumulación"
+      ],
+      "url": "https://armatujubilacion.com",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Argentina"
+      },
+      "potentialAction": {
+        "@type": "UseAction",
+        "target": "https://armatujubilacion.com/#retirementTab"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "ArmaTuJubilación",
+        "url": "https://armatujubilacion.com"
+      }
+    }
+    </script>
+    
+    <!-- Google tag (gtag.js) - si tienes Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
+
+    <!-- Meta tags optimizados para Argentina -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título optimizado -->
+    <title>Calculadora de Jubilación y Ahorro Argentina | Simula tu Retiro</title>
+    
+    <!-- Meta description mejorada -->
+    <meta name="description" content="Calcula tu jubilación mínima en Argentina. Herramienta gratuita de simulación para planificar tu retiro y ahorros con tasas actualizadas. ¡Planifica hoy tu futuro!">
+    
+    <!-- Palabras clave enfocadas -->
+    <meta name="keywords" content="jubilación argentina, jubilación mínima, cálculo de jubilación, cálculo de ahorro, planificación retiro argentina, ANSES, simulador financiero">
+    
+    <!-- Etiqueta Hreflang para Argentina -->
+    <link rel="alternate" hreflang="es-ar" href="https://armatujubilacion.com/" />
+    
+    <!-- URL canónica -->
+    <link rel="canonical" href="https://armatujubilacion.com" />
+>>>>>>> 1ce3227 (Added microdata for SEO enhancement across the site)
 </head>
-<body>
+<body itemscope itemtype="https://schema.org/WebPage">
+    <meta itemprop="name" content="Calculadora de Jubilación y Ahorro Argentina">
+    <meta itemprop="description" content="Herramienta para calcular tu jubilación y ahorros en Argentina, simulando diferentes escenarios para tu retiro y capital">
+    <meta itemprop="url" content="https://armatujubilacion.com">
+    <meta itemprop="keywords" content="jubilación argentina, calculadora retiro, ahorro jubilatorio">
     <header>
         <div class="container">
             <h1 class="title-with-icon">
@@ -23,15 +112,20 @@
         <div class="tabs">
             <button class="tab-button active" data-tab="retirement">Plan de Retiro</button>
             <button class="tab-button" data-tab="savings">Ahorro Personal</button>
+            <button class="tab-button" data-tab="glossary">Glosario</button>
         </div>
 
         <div id="retirementTab" class="tab-content active">
             <div class="app-container">
-                <section class="calculator-section">
+                <section class="calculator-section" itemscope itemtype="https://schema.org/FinancialCalculator">
+                    <meta itemprop="name" content="Calculadora de Jubilación Mínima Argentina">
+                    <meta itemprop="description" content="Herramienta para calcular tu jubilación y ahorros en Argentina">
+                    <meta itemprop="keywords" content="jubilación argentina, jubilación mínima, cálculo jubilatorio">
+                    
                     <h2>Configura tu Plan de Retiro</h2>
                     <form id="retirement-form">
                         <div class="form-group">
-                            <label for="retirementType">¿Qué deseas calcular?</label>
+                            <label for="retirementType"><a href="#glossary-que-calcular" class="glossary-link">¿Qué deseas calcular?</a></label>
                             <div class="input-tooltip-container">
                                 <select id="retirementType">
                                     <option value="duration">Monto de retiro anual</option>
@@ -49,7 +143,7 @@
                         </div>
 
                         <div class="form-group" id="initialAmountGroup">
-                            <label for="initialAmount">Monto Inicial (USD)</label>
+                            <label for="initialAmount"><a href="#glossary-monto-inicial" class="glossary-link">Monto Inicial (USD)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="initialAmount" min="0" step="1000" placeholder="Ej: 10000">
                                 <div class="tooltip-box">
@@ -62,7 +156,7 @@
                         </div>
 
                         <div class="form-group" id="contributionYearsGroup">
-                            <label for="contributionYears">Años de Aporte</label>
+                            <label for="contributionYears"><a href="#glossary-anos-aporte" class="glossary-link">Años de Aporte</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="contributionYears" min="1" max="50" placeholder="Ej: 30">
                                 <div class="tooltip-box">
@@ -75,7 +169,7 @@
                         </div>
 
                         <div class="form-group" id="monthlyContributionGroup">
-                            <label for="monthlyContribution">Aporte Mensual (USD)</label>
+                            <label for="monthlyContribution"><a href="#glossary-aporte-mensual" class="glossary-link">Aporte Mensual (USD)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="monthlyContribution" min="0" step="100" placeholder="Ej: 500">
                                 <div class="tooltip-box">
@@ -88,7 +182,7 @@
                         </div>
 
                         <div class="form-group" id="annualRateGroup">
-                            <label for="annualRate">Tasa Real Anual (%)</label>
+                            <label for="annualRate"><a href="#glossary-tasa-anual-real" class="glossary-link">Tasa Real Anual (%)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="annualRate" min="0" max="15" step="0.1" placeholder="Ej: 5">
                                 <div class="tooltip-box">
@@ -102,7 +196,7 @@
                         </div>
 
                         <div class="form-group" id="retirementDurationGroup">
-                            <label for="retirementDuration">Duración del Retiro (años)</label>
+                            <label for="retirementDuration"><a href="#glossary-duracion-retiro" class="glossary-link">Duración del Retiro (años)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="retirementDuration" min="1" max="50" placeholder="Ej: 20">
                                 <div class="tooltip-box">
@@ -115,7 +209,7 @@
                         </div>
                         
                         <div class="form-group" id="decumulationRateGroup">
-                            <label for="decumulationRate">Tasa en Retiro (%)</label>
+                            <label for="decumulationRate"><a href="#glossary-tasa-retiro" class="glossary-link">Tasa en Retiro (%)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="decumulationRate" min="0" max="15" step="0.1" placeholder="Ej: 3">
                                 <div class="tooltip-box">
@@ -128,7 +222,7 @@
                         </div>
 
                         <div class="form-group" id="retirementAmountGroup">
-                            <label for="retirementAmount">Monto Anual de Retiro (USD)</label>
+                            <label for="retirementAmount"><a href="#glossary-monto-retiro-anual" class="glossary-link">Monto Anual de Retiro (USD)</a></label>
                             <div class="input-tooltip-container">
                                 <input type="number" id="retirementAmount" min="0" step="1000" placeholder="Ej: 30000">
                                 <div class="tooltip-box">
@@ -157,7 +251,11 @@
                     </form>
                 </section>
 
-                <section class="results-section">
+                <section class="results-section" itemscope itemtype="https://schema.org/FinancialProduct">
+                    <meta itemprop="name" content="Resultados de Jubilación Argentina">
+                    <meta itemprop="category" content="Jubilación Mínima Argentina">
+                    <meta itemprop="audience" content="Personas planificando su retiro en Argentina">
+                    
                     <h2>Resultados</h2>
                     <div class="results">
                         <div class="result-card" id="finalAmountCard">
@@ -187,6 +285,54 @@
                     </div>
                 </section>
             </div>
+
+            <section class="info-section" id="historical-info" itemscope itemtype="https://schema.org/FinancialProduct">
+                <meta itemprop="name" content="Información Financiera para Jubilación Argentina">
+                <meta itemprop="category" content="Inversiones para Jubilación">
+                <meta itemprop="audience" content="Inversores para Retiro en Argentina">
+                <h2>Información sobre Tasas e Inversiones</h2>
+
+                <div class="historical-info">
+                    <h3>Tasa Real y Rendimientos Históricos</h3>
+                    <p>La <strong>tasa real</strong> es el rendimiento ajustado por inflación que se obtiene de una inversión. Se calcula restando la tasa de inflación de la tasa nominal de rendimiento.</p>
+                    
+                    <div class="info-grid">
+                        <div class="info-card" itemscope itemtype="https://schema.org/InvestmentOrDeposit">
+                            <meta itemprop="name" content="S&P 500">
+                            <meta itemprop="description" content="Índice S&P 500 con rendimiento histórico nominal del 10% anual">
+                            <h4>S&P 500 <a href="https://www.investing.com/indices/us-spx-500?utm_source=google&utm_medium=cpc&utm_campaign=16816825575&utm_content=725858862462&utm_term=dsa-1518303930164_&GL_Ad_ID=725858862462&GL_Campaign_ID=16816825575&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmuQkreexMkJjLFhzuJ6oB9-moWyZ0pM76SZ7bEBznlOnFl0SchpKksaAoTlEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>El índice S&P 500 agrupa a las 500 empresas más grandes que cotizan en bolsa en Estados Unidos. En los últimos 60 años, ha tenido un rendimiento nominal promedio anual del 10%.</p>
+                            <p class="highlight">Rendimiento histórico: ~10% nominal / ~7% real</p>
+                        </div>
+                        
+                        <div class="info-card" itemscope itemtype="https://schema.org/InvestmentOrDeposit">
+                            <meta itemprop="name" content="US Treasury 10Y">
+                            <meta itemprop="description" content="Bonos del Tesoro estadounidense con rendimiento histórico nominal del 4.5% anual">
+                            <h4>US Treasury 10Y <a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield?utm_source=google&utm_medium=cpc&utm_campaign=16816825584&utm_content=591978799350&utm_term=dsa-1546555491574_&GL_Ad_ID=591978799350&GL_Campaign_ID=16816825584&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmt0vNqMIbt0RTWTuggGTltUwwMQexukfxa47ags546tANpkr3o9il4aAn4cEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>Los bonos del Tesoro estadounidense a 10 años son títulos de deuda emitidos por el gobierno de EE.UU. Son considerados una de las inversiones más seguras del mundo.</p>
+                            <p class="highlight">Rendimiento histórico: ~4.5% nominal / ~1.5% real</p>
+                        </div>
+                        
+                        <div class="info-card" itemscope itemtype="https://schema.org/MonetaryAmount">
+                            <meta itemprop="name" content="Inflación Promedio USA">
+                            <meta itemprop="description" content="Inflación promedio histórica en Estados Unidos del 3% anual">
+                            <h4>Inflación Promedio (USA) <a href="https://datos.bancomundial.org/indicador/FP.CPI.TOTL.ZG?end=2023&locations=US&start=1960&view=chart" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>La inflación es el aumento generalizado y sostenido de los precios de bienes y servicios. Reduce el poder adquisitivo del dinero con el tiempo.</p>
+                            <p class="highlight">Promedio histórico: ~3% anual</p>
+                        </div>
+                        
+                        <div class="info-card" itemscope itemtype="https://schema.org/InvestmentOrDeposit">
+                            <meta itemprop="name" content="7 Magníficas">
+                            <meta itemprop="description" content="Acciones tecnológicas con rendimiento promedio del 25% anual">
+                            <h4>7 Magníficas <a href="https://extraetf.com/es/stock-comparison?products=US88160R1014-stock,US5949181045-stock,US0231351067-stock,US0378331005-stock,US67066G1040-stock,US02079K3059-stock,US30303M1027-stock" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>Se las conoce como las 7 magníficas a las acciones de Nvidia, Tesla, Microsoft, Google (Alphabet), Meta, Apple y Amazon.</p>
+                            <p class="highlight">Rendimiento promedio (últimos 10 años): ~25% anual / ~21% real (con alta volatilidad)</p>
+                        </div>
+                    </div>
+                    
+                    <p class="disclaimer">Estos datos son referenciales basados en promedios históricos y no garantizan rendimientos futuros. Las inversiones siempre conllevan riesgos.</p>
+                </div>
+            </section>
         </div>
 
         <div id="savingsTab" class="tab-content">
@@ -312,51 +458,146 @@
                     </div>
                 </section>
             </div>
+
+            <section class="info-section" id="historical-info">
+                <h2>Información sobre Tasas e Inversiones</h2>
+
+                <div class="historical-info">
+                    <h3>Tasa Real y Rendimientos Históricos</h3>
+                    <p>La <strong>tasa real</strong> es el rendimiento ajustado por inflación que se obtiene de una inversión. Se calcula restando la tasa de inflación de la tasa nominal de rendimiento.</p>
+                    
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h4>S&P 500 <a href="https://www.investing.com/indices/us-spx-500?utm_source=google&utm_medium=cpc&utm_campaign=16816825575&utm_content=725858862462&utm_term=dsa-1518303930164_&GL_Ad_ID=725858862462&GL_Campaign_ID=16816825575&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmuQkreexMkJjLFhzuJ6oB9-moWyZ0pM76SZ7bEBznlOnFl0SchpKksaAoTlEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>El índice S&P 500 agrupa a las 500 empresas más grandes que cotizan en bolsa en Estados Unidos. En los últimos 60 años, ha tenido un rendimiento nominal promedio anual del 10%.</p>
+                            <p class="highlight">Rendimiento histórico: ~10% nominal / ~7% real</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>US Treasury 10Y <a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield?utm_source=google&utm_medium=cpc&utm_campaign=16816825584&utm_content=591978799350&utm_term=dsa-1546555491574_&GL_Ad_ID=591978799350&GL_Campaign_ID=16816825584&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmt0vNqMIbt0RTWTuggGTltUwwMQexukfxa47ags546tANpkr3o9il4aAn4cEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>Los bonos del Tesoro estadounidense a 10 años son títulos de deuda emitidos por el gobierno de EE.UU. Son considerados una de las inversiones más seguras del mundo.</p>
+                            <p class="highlight">Rendimiento histórico: ~4.5% nominal / ~1.5% real</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>Inflación Promedio (USA) <a href="https://datos.bancomundial.org/indicador/FP.CPI.TOTL.ZG?end=2023&locations=US&start=1960&view=chart" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>La inflación es el aumento generalizado y sostenido de los precios de bienes y servicios. Reduce el poder adquisitivo del dinero con el tiempo.</p>
+                            <p class="highlight">Promedio histórico: ~3% anual</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>7 Magníficas <a href="https://extraetf.com/es/stock-comparison?products=US88160R1014-stock,US5949181045-stock,US0231351067-stock,US0378331005-stock,US67066G1040-stock,US02079K3059-stock,US30303M1027-stock" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
+                            <p>Se las conoce como las 7 magníficas a las acciones de Nvidia, Tesla, Microsoft, Google (Alphabet), Meta, Apple y Amazon.</p>
+                            <p class="highlight">Rendimiento promedio (últimos 10 años): ~25% anual / ~21% real (con alta volatilidad)</p>
+                        </div>
+                    </div>
+                    
+                    <p class="disclaimer">Estos datos son referenciales basados en promedios históricos y no garantizan rendimientos futuros. Las inversiones siempre conllevan riesgos.</p>
+                </div>
+            </section>
         </div>
 
-        <section class="info-section" id="historical-info">
-            <h2>Información sobre Tasas e Inversiones</h2>
+        <div id="glossaryTab" class="tab-content">
+            <h2>Glosario de Términos</h2>
 
-            <div class="historical-info">
-                <h3>Tasa Real y Rendimientos Históricos</h3>
-                <p>La <strong>tasa real</strong> es el rendimiento ajustado por inflación que se obtiene de una inversión. Se calcula restando la tasa de inflación de la tasa nominal de rendimiento.</p>
-                
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h4>S&P 500 <a href="https://www.investing.com/indices/us-spx-500?utm_source=google&utm_medium=cpc&utm_campaign=16816825575&utm_content=725858862462&utm_term=dsa-1518303930164_&GL_Ad_ID=725858862462&GL_Campaign_ID=16816825575&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmuQkreexMkJjLFhzuJ6oB9-moWyZ0pM76SZ7bEBznlOnFl0SchpKksaAoTlEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
-                        <p>El índice S&P 500 agrupa a las 500 empresas más grandes que cotizan en bolsa en Estados Unidos. En los últimos 60 años, ha tenido un rendimiento nominal promedio anual del 10%.</p>
-                        <p class="highlight">Rendimiento histórico: ~10% nominal / ~7% real</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <h4>US Treasury 10Y <a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield?utm_source=google&utm_medium=cpc&utm_campaign=16816825584&utm_content=591978799350&utm_term=dsa-1546555491574_&GL_Ad_ID=591978799350&GL_Campaign_ID=16816825584&ISP=1&gad_source=1&gclid=Cj0KCQjwqIm_BhDnARIsAKBYcmt0vNqMIbt0RTWTuggGTltUwwMQexukfxa47ags546tANpkr3o9il4aAn4cEALw_wcB" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
-                        <p>Los bonos del Tesoro estadounidense a 10 años son títulos de deuda emitidos por el gobierno de EE.UU. Son considerados una de las inversiones más seguras del mundo.</p>
-                        <p class="highlight">Rendimiento histórico: ~4.5% nominal / ~1.5% real</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <h4>Inflación Promedio (USA) <a href="https://datos.bancomundial.org/indicador/FP.CPI.TOTL.ZG?end=2023&locations=US&start=1960&view=chart" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a></h4>
-                        <p>La inflación es el aumento generalizado y sostenido de los precios de bienes y servicios. Reduce el poder adquisitivo del dinero con el tiempo.</p>
-                        <p class="highlight">Promedio histórico: ~3% anual</p>
-                    </div>
-                </div>
-                
-                <p class="disclaimer">Estos datos son referenciales basados en promedios históricos y no garantizan rendimientos futuros. Las inversiones siempre conllevan riesgos.</p>
+            <div id="glossary-que-calcular" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">¿Qué deseas calcular?</h3>
+                <p itemprop="description">Esta opción te permite elegir qué variable principal quieres que la calculadora determine, basándose en los otros datos que ingreses.</p>
             </div>
-        </section>
+            <div id="glossary-monto-retiro-anual" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Monto de retiro anual</h3>
+                <p itemprop="description">Cuánta plata vas a poder retirar anualmente con lo que has logrado recaudar (juntar e invertir) en los años de aportes y sumado al aporte inicial capitalizado con interés compuesto. También sumado a que en tu retiro vas a seguir capitalizando tus ahorros a una tasa.</p>
+            </div>
 
-        <div class="ad-container">
-            <!-- Espacio reservado para publicidad -->
-            <div class="ad-placeholder">Espacio reservado para publicidad</div>
+            <div id="glossary-duracion-retiro" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Duración del retiro</h3>
+                <p itemprop="description">Cuántos años vas a poder utilizar hasta llegar a 0 con lo juntado durante los años de aportes y lo capitalizado en tu jubilación.</p>
+            </div>
+
+            <div id="glossary-monto-inicial" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Monto inicial necesario</h3>
+                <p itemprop="description">Con cuánta plata tenés que empezar para poder lograr la jubilación que deseas anualmente durante los años que quieras. Podría ser que no necesites monto inicial necesario ya que con los aportes mensuales ya podés lograr tu objetivo.</p>
+            </div>
+
+            <div id="glossary-aporte-mensual" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Aporte mensual necesario</h3>
+                <p itemprop="description">Cuánto tengo que aportar mensualmente para lograr mi jubilación deseada. (En estos cálculos para simplificar no capitalizamos mensualmente, sino que hacemos los aportes mensuales multiplicados por la cantidad de meses del año).</p>
+            </div>
+
+            <div id="glossary-anos-aporte" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Años de aporte</h3>
+                <p itemprop="description">Cantidad de años que vas a aportar tu plata en los instrumentos que elijas. Si elijo 20 años, significa que en mis cálculos voy a meter plata 20 años seguidos a los instrumentos financieros que elija. (Instrumentos son por ejemplo: bonos, acciones, obligaciones negociables, etc.).</p>
+            </div>
+
+            <div id="glossary-tasa-anual-real" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Tasa anual real</h3>
+                <p itemprop="description">¿Qué carajo es la tasa real anual? Básicamente es la tasa a la que vos estas capitalizando compuestamente tu plata anualmente. ¿Por qué real? Porque ya descontamos lo que pensamos que puede ser la inflación, más abajo te di el dato de 3% promedio inflación de USA. ¿Y qué es "capitalizando compuestamente"? Bueno, el secreto que la plata crezca más fácilmente es con el interés compuesto. Vamos a un ejemplo para diferenciarlo del interés simple.</p>
+                <p>Si pongo $10.000 en un plazo fijo que me paga 35% TNA. La tasa mensual seria de 2,87%. Pongo mis $10.000 y en un mes tengo $10.287,76. Decido volver a poner mi plata, pero los intereses que gane ($287,76) me los guardo en el bolsillo. Si la TNA se mantiene 35%, en un mes retiro nuevamente $10.287,76. Resultado final de dos meses de plazo fijo = $10.575,34. Este es un ejemplo de capitalización simple.</p>
+                <p>Ahora pensemos que esos $287,76 en vez de guardarlos en el cajón al mes que se venció el plazo fijo decidimos meterlo nuevamente al plazo fijo con 35% TNA. En el segundo mes de plazo fijo entonces ponemos $10.287,76 al banco. En un mes retiraríamos $10583,71. Este es un ejemplo de capitalización compuesta. Si hacemos esto todos los meses y en caso de que la tasa se mantenga constante obtenemos una TEA (tasa efectiva anual) de 40% . (Este es un ejemplo simple).</p>
+            </div>
+
+            <div id="glossary-tasa-retiro" itemscope itemtype="https://schema.org/DefinedTerm">
+                <meta itemprop="inDefinedTermSet" content="Términos de Jubilación Argentina">
+                <h3 itemprop="name">Tasa en retiro</h3>
+                <p itemprop="description">A qué tasa voy a seguir capitalizando mis ahorros. En caso de no invertirla en nada se nos iría achicando el poder adquisitivo ya que nuestros ahorros se verían afectados por la inflación.</p>
+            </div>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 ArmaTuJubilación. Esta herramienta es únicamente para fines educativos e informativos.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ArmaTuJubilación</h3>
+                    <p>Herramienta gratuita para planificar y visualizar tu futuro financiero</p>
+                    <p class="disclaimer">Esta calculadora es únicamente para fines educativos e informativos. No constituye asesoramiento financiero.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Útiles</h3>
+                    <ul>
+                        <li><a href="#retirementTab">Calculadora de Retiro</a></li>
+                        <li><a href="#savingsTab">Calculadora de Ahorro</a></li>
+                        <li><a href="#glossaryTab">Glosario Financiero</a></li>
+                        <li><a href="#historical-info">Información sobre Tasas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Términos Populares</h3>
+                    <ul>
+                        <li><a href="#glossary-tasa-anual-real">Tasa Real Anual</a></li>
+                        <li><a href="#glossary-monto-retiro-anual">Monto de Retiro</a></li>
+                        <li><a href="#glossary-tasa-retiro">Tasa en Retiro</a></li>
+                        <li><a href="#glossary-anos-aporte">Años de Aporte</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ArmaTuJubilación. Todos los derechos reservados.</p>
+                <p>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </p>
+            </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Script para sitemap.xml dinámico -->
+    <script>
+        // Este script se puede utilizar para generar un sitemap.xml dinámico
+        // si decides implementarlo en el futuro
+    </script>
 </body>
 </html> 

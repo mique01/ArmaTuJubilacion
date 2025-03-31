@@ -1,3 +1,14 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.armatujubilacion.com/sitemap.xml
+
+# Indicar sitemap
+Sitemap: https://armatujubilacion.com/sitemap.xml
+
+# Optimizar la tasa de rastreo
+Crawl-delay: 5
+
+# Permitir indexación de secciones importantes
+Allow: /index.html#jubilacion-argentina
+Allow: /index.html#retirementTab
+Allow: /index.html#savingsTab
+Allow: /index.html#glossaryTab
