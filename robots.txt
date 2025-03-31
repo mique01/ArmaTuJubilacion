@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+
 # Indicar sitemap
 Sitemap: https://armatujubilacion.com/sitemap.xml
 
