@@ -4,6 +4,9 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
+User-agent: Mediapartners-Google
+Allow: /
+
 
 # Indicar sitemap
 Sitemap: https://armatujubilacion.com/sitemap.xml
