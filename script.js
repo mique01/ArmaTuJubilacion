@@ -428,7 +428,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const actualFV = calculateFutureValue(PV, PMT, r, contributionYears);
         
         for (let year = 0; year <= contributionYears; year++) {
-            const value = calculateFutureValue(PV, PMT, r, year);
+            // Para el último año, usar el valor real calculado para evitar discrepancias
+            const value = (year === contributionYears) ? actualFV : calculateFutureValue(PV, PMT, r, year);
             accumulationData.push({
                 x: year,
                 y: Math.round(value)
@@ -496,22 +497,48 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Fase de Acumulación',
                         data: accumulationData,
-                        borderColor: '#3d8af7',
-                        backgroundColor: 'rgba(61, 138, 247, 0.1)',
+                        borderColor: '#4ecca3',
+                        borderWidth: 3,
+                        backgroundColor: function(context) {
+                            const chart = context.chart;
+                            const {ctx, chartArea} = chart;
+                            if (!chartArea) {
+                                // This happens on initial chart load
+                                return 'rgba(78, 204, 163, 0.1)';
+                            }
+                            // Create gradient
+                            const gradient = ctx.createLinearGradient(0, 0, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(78, 204, 163, 0.6)');
+                            gradient.addColorStop(1, 'rgba(78, 204, 163, 0.0)');
+                            return gradient;
+                        },
                         fill: true,
                         pointRadius: 0,
-                        pointHoverRadius: 5,
-                        tension: 0.1
+                        pointHoverRadius: 6,
+                        tension: 0.3
                     },
                     {
                         label: 'Fase de Decumulación',
                         data: decumulationData,
                         borderColor: '#ff6b6b',
-                        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                        borderWidth: 3,
+                        backgroundColor: function(context) {
+                            const chart = context.chart;
+                            const {ctx, chartArea} = chart;
+                            if (!chartArea) {
+                                // This happens on initial chart load
+                                return 'rgba(255, 107, 107, 0.1)';
+                            }
+                            // Create gradient
+                            const gradient = ctx.createLinearGradient(0, 0, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(255, 107, 107, 0.6)');
+                            gradient.addColorStop(1, 'rgba(255, 107, 107, 0.0)');
+                            return gradient;
+                        },
                         fill: true,
                         pointRadius: 0,
-                        pointHoverRadius: 5,
-                        tension: 0.1
+                        pointHoverRadius: 6,
+                        tension: 0.3
                     }
                 ]
             },
@@ -523,20 +550,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         type: 'linear',
                         title: {
                             display: true,
-                            text: 'Años'
+                            text: 'Años',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         },
                         grid: {
                             color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Capital (USD)'
+                            text: 'Capital (USD)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         },
                         ticks: {
                             callback: function(value) {
                                 return formatCurrency(value);
+                            },
+                            font: {
+                                size: 12
                             }
                         },
                         grid: {
@@ -545,10 +588,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 interaction: {
-                    mode: 'nearest',  // Cambiado de 'index' a 'nearest' para mejor control
+                    mode: 'nearest',
                     intersect: false
                 },
                 plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
                     tooltip: {
                         filter: function(tooltipItem) {
                             // Filtrar los tooltips para mostrar solo la fase correcta según el año
@@ -781,7 +833,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Calculate future value
                 finalAmount = calculateSavingsFutureValue(initialAmount, monthlyContribution, rate, years);
                 
-                // Calculate interest earned
+                // Calculate interest earned correctamente
                 const totalContributions = initialAmount + (monthlyContribution * 12 * years);
                 interestEarnedValue = finalAmount - totalContributions;
                 
@@ -796,9 +848,9 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'initialAmount':
                 // Calculate required initial amount
                 requiredInitial = calculateSavingsRequiredInitialAmount(goal, monthlyContribution, rate, years);
-                finalAmount = goal;
+                finalAmount = calculateSavingsFutureValue(requiredInitial, monthlyContribution, rate, years);
                 
-                // Calculate interest earned
+                // Calculate interest earned correctamente
                 const totalWithRequiredInitial = requiredInitial + (monthlyContribution * 12 * years);
                 interestEarnedValue = finalAmount - totalWithRequiredInitial;
                 
@@ -813,9 +865,9 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'monthlyContribution':
                 // Calculate required monthly contribution
                 requiredContribution = calculateSavingsRequiredMonthlyContribution(goal, initialAmount, rate, years);
-                finalAmount = goal;
+                finalAmount = calculateSavingsFutureValue(initialAmount, requiredContribution, rate, years);
                 
-                // Calculate interest earned
+                // Calculate interest earned correctamente
                 const totalWithRequiredContribution = initialAmount + (requiredContribution * 12 * years);
                 interestEarnedValue = finalAmount - totalWithRequiredContribution;
                 
@@ -830,18 +882,29 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'timeToGoal':
                 // Calculate time to reach goal
                 yearsToGoal = calculateSavingsYearsToReachGoal(initialAmount, monthlyContribution, rate, goal);
-                finalAmount = goal;
                 
-                // Calculate interest earned
-                const totalContributionsToGoal = initialAmount + (monthlyContribution * 12 * yearsToGoal);
-                interestEarnedValue = finalAmount - totalContributionsToGoal;
+                // Calcular el valor final con precisión
+                if (isFinite(yearsToGoal)) {
+                    finalAmount = calculateSavingsFutureValue(initialAmount, monthlyContribution, rate, yearsToGoal);
+                } else {
+                    finalAmount = 0;
+                }
+                
+                // Calcular el interés correctamente
+                // Necesitamos calcular la suma total de aportes exactamente hasta el momento en que alcanza la meta
+                if (isFinite(yearsToGoal) && yearsToGoal > 0) {
+                    const totalDeposits = initialAmount + (monthlyContribution * 12 * yearsToGoal);
+                    interestEarnedValue = goal - totalDeposits;
+                } else {
+                    interestEarnedValue = 0;
+                }
                 
                 // Display results
                 timeToGoal.textContent = formatYears(yearsToGoal);
                 interestEarned.textContent = formatCurrency(interestEarnedValue);
                 
                 // Create chart
-                createSavingsChart(initialAmount, monthlyContribution, rate, yearsToGoal, goal, yearsToGoal);
+                createSavingsChart(initialAmount, monthlyContribution, rate, Math.min(isFinite(yearsToGoal) ? Math.ceil(yearsToGoal) : 30, 50), goal, yearsToGoal);
                 break;
         }
     }
@@ -861,8 +924,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate required initial amount for savings goal
     function calculateSavingsRequiredInitialAmount(goal, monthlyContribution, rate, years) {
-        // PV = FV / (1 + r)ⁿ - PMT × [(1 + r)ⁿ - 1] / [r × (1 + r)ⁿ]
+        // PV = [FV - PMT * ((1+r)^n - 1) / r] / (1+r)^n
         const annualContribution = monthlyContribution * 12;
+        
+        if (years === 0) return goal;
         
         if (rate === 0) {
             return Math.max(0, goal - (annualContribution * years));
@@ -890,31 +955,58 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate years to reach savings goal
     function calculateSavingsYearsToReachGoal(initialAmount, monthlyContribution, rate, goal) {
-        // If goal is already reached or no positive contributions, return special values
+        // Si la meta ya está alcanzada
         if (initialAmount >= goal) return 0;
+        
+        // Si no hay aportes ni interés, no se puede alcanzar la meta
         if (monthlyContribution <= 0 && rate <= 0) return Infinity;
         
-        // If no interest, simple calculation
+        // Si no hay interés, cálculo simple
         if (rate === 0) {
+            if (monthlyContribution <= 0) return Infinity;
             return (goal - initialAmount) / (monthlyContribution * 12);
         }
         
-        // If no contributions, logarithmic formula
+        // Si no hay aportes mensuales, fórmula logarítmica
         if (monthlyContribution === 0) {
+            if (rate <= 0) return Infinity;
             return Math.log(goal / initialAmount) / Math.log(1 + rate);
         }
         
-        // Use numerical approximation for general case
+        // Caso general: aproximación numérica precisa
+        const tolerance = 0.001; // Precisión de 0.001 años (aproximadamente 8 horas)
+        const maxYears = 200;
         const annualContribution = monthlyContribution * 12;
-        let years = 0;
-        let balance = initialAmount;
         
-        while (balance < goal && years < 100) {
-            balance = balance * (1 + rate) + annualContribution;
-            years++;
+        // Buscamos el tiempo exacto usando el método de bisección
+        let lowerBound = 0;
+        let upperBound = maxYears;
+        let midPoint;
+        let currentValue;
+        
+        while (upperBound - lowerBound > tolerance) {
+            midPoint = (lowerBound + upperBound) / 2;
+            
+            if (rate === 0) {
+                currentValue = initialAmount + annualContribution * midPoint;
+            } else {
+                const compoundFactor = Math.pow(1 + rate, midPoint);
+                currentValue = initialAmount * compoundFactor + annualContribution * (compoundFactor - 1) / rate;
+            }
+            
+            if (currentValue < goal) {
+                lowerBound = midPoint;
+            } else {
+                upperBound = midPoint;
+            }
+            
+            // Seguridad: si estamos muy cerca del límite o hay problemas de convergencia
+            if (midPoint >= maxYears - tolerance) {
+                return Infinity;
+            }
         }
         
-        return years;
+        return Math.max(0, midPoint);
     }
     
     // Create savings chart
@@ -964,43 +1056,112 @@ document.addEventListener('DOMContentLoaded', function() {
             savingsChart.destroy();
         }
         
+        // Create datasets array with correct structure
+        const datasets = [
+            {
+                label: 'Ahorros Totales',
+                data: savingsData,
+                borderColor: '#4ecca3',
+                borderWidth: 3,
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) {
+                        // This happens on initial chart load
+                        return 'rgba(78, 204, 163, 0.1)';
+                    }
+                    // Create gradient
+                    const gradient = ctx.createLinearGradient(0, 0, 0, chartArea.bottom);
+                    gradient.addColorStop(0, 'rgba(78, 204, 163, 0.6)');
+                    gradient.addColorStop(1, 'rgba(78, 204, 163, 0.0)');
+                    return gradient;
+                },
+                fill: true,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                tension: 0.3
+            },
+            {
+                label: 'Aportes Acumulados',
+                data: contributionsData,
+                borderColor: '#3d8af7',
+                borderWidth: 3,
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) {
+                        // This happens on initial chart load
+                        return 'rgba(61, 138, 247, 0.1)';
+                    }
+                    // Create gradient
+                    const gradient = ctx.createLinearGradient(0, 0, 0, chartArea.bottom);
+                    gradient.addColorStop(0, 'rgba(61, 138, 247, 0.3)');
+                    gradient.addColorStop(1, 'rgba(61, 138, 247, 0.0)');
+                    return gradient;
+                },
+                fill: true,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                tension: 0.3
+            }
+        ];
+        
+        // Add goal line dataset if needed
+        if (goal > 0) {
+            datasets.push({
+                label: 'Meta de Ahorro',
+                data: goalLine,
+                borderColor: '#ff6b6b',
+                borderWidth: 3,
+                borderDash: [6, 6],
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            });
+        }
+        
+        // Create annotations configuration
+        const annotations = {};
+        if (goal > 0 && isFinite(yearsToGoal)) {
+            annotations.annotations = {
+                // Línea vertical en el punto donde se alcanza la meta
+                line1: {
+                    type: 'line',
+                    xMin: yearsToGoal,
+                    xMax: yearsToGoal,
+                    borderColor: '#ff6b6b',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    label: {
+                        content: 'Meta alcanzada',
+                        display: true,
+                        position: 'top',
+                        backgroundColor: 'rgba(255, 107, 107, 0.8)',
+                        color: '#fff',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                // Punto de intersección donde se alcanza la meta
+                point1: {
+                    type: 'point',
+                    xValue: yearsToGoal,
+                    yValue: goal,
+                    backgroundColor: '#ff6b6b',
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    radius: 6
+                }
+            };
+        }
+        
         // Create a new chart
         const ctx = document.getElementById('savingsChart').getContext('2d');
         savingsChart = new Chart(ctx, {
             type: 'line',
             data: {
-                datasets: [
-                    {
-                        label: 'Ahorros Totales',
-                        data: savingsData,
-                        borderColor: '#3d8af7',
-                        backgroundColor: 'rgba(61, 138, 247, 0.1)',
-                        fill: true,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Aportes Acumulados',
-                        data: contributionsData,
-                        borderColor: '#64c7ff',
-                        backgroundColor: 'rgba(100, 199, 255, 0.1)',
-                        fill: true,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        tension: 0.1
-                    },
-                    ...(goal > 0 ? [{
-                        label: 'Meta de Ahorro',
-                        data: goalLine,
-                        borderColor: '#4ecca3',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        fill: false,
-                        pointRadius: 0,
-                        pointHoverRadius: 0
-                    }] : [])
-                ]
+                datasets: datasets
             },
             options: {
                 responsive: true,
@@ -1010,20 +1171,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         type: 'linear',
                         title: {
                             display: true,
-                            text: 'Años'
+                            text: 'Años',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         },
                         grid: {
                             color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Capital (USD)'
+                            text: 'Capital (USD)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         },
                         ticks: {
                             callback: function(value) {
                                 return formatCurrency(value);
+                            },
+                            font: {
+                                size: 12
                             }
                         },
                         grid: {
@@ -1036,6 +1213,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     intersect: false
                 },
                 plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
@@ -1043,14 +1229,39 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             title: function(context) {
                                 return 'Año ' + context[0].parsed.x;
+                            },
+                            afterLabel: function(context) {
+                                // Solo agregar información adicional para Ahorros Totales
+                                if (context.dataset.label === 'Ahorros Totales') {
+                                    const year = context.parsed.x;
+                                    const savingsValue = context.parsed.y;
+                                    
+                                    // Calcular los aportes acumulados hasta este año
+                                    let totalContributions = initialAmount;
+                                    if (year > 0) {
+                                        totalContributions += monthlyContribution * 12 * year;
+                                    }
+                                    
+                                    // Calcular el interés ganado hasta este punto
+                                    const interestEarned = savingsValue - totalContributions;
+                                    
+                                    if (interestEarned > 0) {
+                                        return 'Intereses ganados: ' + formatCurrency(interestEarned);
+                                    }
+                                }
+                                return '';
                             }
                         },
                         backgroundColor: 'rgba(0, 0, 0, 0.7)',
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         borderColor: 'rgba(255, 255, 255, 0.2)',
-                        borderWidth: 1
-                    }
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: true
+                    },
+                    // Correctamente añadir la anotación como un plugin
+                    annotation: annotations
                 }
             }
         });

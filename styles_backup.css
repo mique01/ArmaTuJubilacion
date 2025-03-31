@@ -1,0 +1,640 @@
+:root {
+    --primary-color: #3d8af7;
+    --secondary-color: #64a9ff;
+    --accent-color: #2c6bed;
+    --dark-bg-color: #000000;
+    --dark-surface: #121212;
+    --gray-dark: #2d2d2d;
+    --gray-medium: #414141;
+    --gray-light: #606060;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-disabled: rgba(255, 255, 255, 0.38);
+    --info-color: #4ecca3;
+    --success-color: #4ecca3;
+    --warning-color: #ffd369;
+    --danger-color: #ff6b6b;
+    --font-family: 'Open Sans', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #e0e0e0;
+    background-color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Tabs Styling */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.tab-button {
+    background-color: var(--gray-dark);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.tab-button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: var(--gray-medium);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.calculator-section, .results-section {
+    background-color: var(--dark-surface);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--gray-medium);
+    padding-bottom: 0.5rem;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--gray-medium);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background-color: var(--gray-dark);
+    color: var(--text-primary);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(100, 169, 255, 0.2);
+}
+
+input::placeholder {
+    color: var(--text-disabled);
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    font-weight: 600;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Improved Tooltip Styling */
+.input-tooltip-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-tooltip-container input,
+.input-tooltip-container select {
+    flex: 1;
+}
+
+.tooltip-box {
+    margin-left: 8px;
+    position: relative;
+}
+
+.tooltip-box i {
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.tooltip-content {
+    display: none;
+    position: absolute;
+    bottom: 125%;
+    right: 0;
+    background-color: var(--gray-dark);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    width: 250px;
+    z-index: 100;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.tooltip-box:hover .tooltip-content {
+    display: block;
+}
+
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 10px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: var(--gray-dark) transparent transparent transparent;
+}
+
+.more-info {
+    display: inline-block;
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin-top: 5px;
+    text-decoration: none;
+}
+
+.more-info:hover {
+    text-decoration: underline;
+}
+
+/* Results Styling */
+.results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.result-card {
+    background-color: var(--secondary-bg-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 200px;
+    flex: 1;
+}
+
+.result-card h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.result-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin: 10px 0 0;
+}
+
+.chart-container {
+    height: 400px;
+    margin-top: 30px;
+    width: 100%;
+    position: relative;
+}
+
+.chart-container .savings-chart {
+    background-color: var(--info-color);
+}
+
+.chart-container .decumulation-chart {
+    background-color: var(--danger-color);
+}
+
+/* Info Section */
+.info-section {
+    background-color: var(--dark-surface);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+.info-section h2 {
+    margin-bottom: 2rem;
+}
+
+.info-section h3 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-card {
+    background-color: var(--gray-dark);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.info-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.info-card p {
+    margin-bottom: 0.8rem;
+}
+
+.info-link {
+    margin-left: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.info-link:hover {
+    color: var(--accent-color);
+}
+
+.highlight {
+    background-color: rgba(61, 138, 247, 0.1);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.disclaimer {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: 1.5rem;
+}
+
+/* Ad Container */
+.ad-container {
+    margin-bottom: 3rem;
+}
+
+.ad-placeholder {
+    background-color: var(--gray-dark);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+}
+
+footer {
+    background-color: #242424;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 40px 0 20px;
+    margin-top: 50px;
+    border-top: 1px solid #333;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+    padding-right: 20px;
+}
+
+.footer-section h3 {
+    color: #3d8af7;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 8px;
+}
+
+.footer-section a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #3d8af7;
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2em;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #3d8af7;
+}
+
+/* Estilos para SEO */
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+    margin-top: 0;
+}
+
+main h2 {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.results h3 {
+    color: #3d8af7; /* Destacar títulos de resultados */
+}
+
+/* Ajustes para accesibilidad */
+a:focus, button:focus, input:focus, select:focus {
+    outline: 2px solid #3d8af7;
+    outline-offset: 2px;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .result-value {
+        font-size: 1.4rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tab-button {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+    }
+    
+    .footer-section {
+        width: 100%;
+        padding-right: 0;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-bottom p:first-child {
+        margin-bottom: 10px;
+    }
+    
+    .social-link {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1.5rem 0;
+    }
+    
+    .calculator-section, .results-section, .info-section {
+        padding: 1.5rem;
+    }
+    
+    .results {
+        grid-template-columns: 1fr;
+    }
+    
+    .tooltip-content {
+        width: 200px;
+        right: -50px;
+    }
+    
+    .tooltip-content::after {
+        right: 60px;
+    }
+    
+    .header-icon {
+        height: 1.2em;
+    }
+}
+
+/* Ensure graphs are visible */
+canvas {
+    background-color: rgba(30, 30, 30, 0.4);
+    border-radius: 8px;
+}
+
+/* Estilos para el título con icono */
+.title-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.header-icon {
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+    stroke: white;
+    stroke-width: 1.2;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+}
+
+.title-with-icon::before {
+    content: url('path/to/retirement-icon.svg');
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Styles for Glossary Links in Labels */
+.glossary-link {
+    color: inherit; /* Use the default label color */
+    text-decoration: underline; /* Add underline to indicate it's a link */
+    text-decoration-style: dotted; /* Use dotted underline for subtle look */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.glossary-link:hover {
+    color: #3d8af7; /* Change color on hover */
+    text-decoration-style: solid;
+}
+
+/* Style for highlighting glossary term on scroll */
+.highlight-glossary {
+    background-color: rgba(61, 138, 247, 0.2); /* Light blue background */
+    transition: background-color 0.5s ease-out; /* Smooth transition */
+    border-radius: 4px;
+    padding: 5px; /* Add some padding */
+    margin: -5px; /* Adjust margin to keep layout */
+}
+
+/* Styles for Glossary Tab */
+#glossaryTab {
+    padding: 20px;
+}
+
+#glossaryTab h2 {
+    margin-bottom: 25px;
+    color: #fff; /* Ensure title is white */
+}
+
+#glossaryTab > div { /* Style each glossary term container */
+    background-color: #2a2a2a; /* Slightly lighter background for the box */
+    border: 1px solid #444; /* Subtle border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px 20px; /* Padding inside the box */
+    margin-bottom: 20px; /* Space between boxes */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow */
+}
+
+#glossaryTab h3 {
+    margin-top: 0;
+    color: #3d8af7; /* Highlight term title */
+    margin-bottom: 10px;
+}
+
+#glossaryTab p {
+    margin-bottom: 10px;
+    color: #ccc; /* Lighter text color for definitions */
+}
+
+#glossaryTab p:last-child {
+    margin-bottom: 0;
+}
+
+/* Remove Rate Options Styles */
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+} 
